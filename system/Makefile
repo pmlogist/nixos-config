@@ -1,5 +1,7 @@
+HOST=$(shell hostname)
+
 switch:
-	@sudo nixos-rebuild switch --flake .#vitaliya
+	@sudo nixos-rebuild switch --flake ".#$(HOST)"
 
 check:
 	@nix flake check
