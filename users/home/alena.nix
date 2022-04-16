@@ -45,10 +45,10 @@
       #  bat.enable = true;
       direnv.enable = true;
       #  foot.enable = true;
-      #  tmux.enable = true;
+      tmux.enable = true;
       zsh.enable = true;
     };
   };
 
-  home.packages = with pkgs; [ docker ];
+  home.packages = with pkgs; [ jq unrar ];
 }

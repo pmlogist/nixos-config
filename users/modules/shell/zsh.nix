@@ -80,15 +80,15 @@ in {
         setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
         setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
 
-        export NODE_PATH=$HOME/.cache/npm-packages/lib/node_modules
         export PATH=$HOME/.cache/npm-packages/bin:$PATH
+        export NODE_PATH=$HOME/.cache/npm-packages/lib/node_modules
       '';
       initExtra = ''
-        bindkey "$terminfo[kcuu1]" history-substring-search-up
-        bindkey "$terminfo[kcud1]" history-substring-search-down
-        bindkey -M vicmd 'k' history-substring-search-up
-        bindkey -M vicmd 'j' history-substring-search-down
-        export PATH=$GOBIN:$PATH
+        #  bindkey "$terminfo[kcuu1]" history-substring-search-up
+        #  bindkey "$terminfo[kcud1]" history-substring-search-down
+        #  bindkey -M vicmd 'k' history-substring-search-up
+        #  bindkey -M vicmd 'j' history-substring-search-down
+          export PATH=$GOBIN:$PATH
       '';
       shellAliases = {
         #ls = "ls --color=auto";

@@ -2,8 +2,7 @@
 let
   inherit (lib) mkIf mkOption types;
   cfg = config.modules.shell.tmux;
-in
-{
+in {
   options.modules.shell.tmux = {
     enable = mkOption {
       type = types.bool;
@@ -29,8 +28,8 @@ in
           extraConfig = ''
             set -g @continuum-restore 'on'
             set -g @continuum-save-interval '60' # minutes
-            set -g terminal-overrides ',xterm-256color:Tc'
-            set -g default-terminal "tmux-256color"
+            #set -g terminal-overrides ',xterm-256color:Tc'
+            #set -g default-terminal "tmux-256color"
             set -as terminal-overrides ',xterm*:sitm=\E[3m'
           '';
         }

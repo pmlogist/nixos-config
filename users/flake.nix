@@ -92,6 +92,7 @@
               ./modules/dev/git.nix
 
               ./modules/shell/direnv.nix
+              ./modules/shell/tmux.nix
               ./modules/shell/zsh.nix
 
               ./home/alena.nix

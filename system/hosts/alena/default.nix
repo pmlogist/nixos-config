@@ -10,14 +10,13 @@
     '';
   };
 
-  #system.activationScripts.postUserActivation.text = ''
-  #    # Install homebrew if it isn't there 
-  #    if [[ ! -d "/usr/local/Homebrew" ]]; then
-  #      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  #    fi
-  #  '';
+  system.activationScripts.postUserActivation.text = ''
+    # Install homebrew if it isn't there 
+    if [[ ! -d "/usr/local/Homebrew" ]]; then
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+  '';
   homebrew = {
-    #brewPrefix = "/opt/homebrew/bin";
     enable = true;
     autoUpdate = true;
     cleanup = "zap";
@@ -27,49 +26,57 @@
     };
     taps = [
       "homebrew/core"
+      "homebrew/services"
       "homebrew/cask"
       "homebrew/cask-fonts"
       "homebrew/cask-drivers"
+      "koekeishiya/formulae"
     ];
+    brews = [ "koekeishiya/formulae/yabai" "koekeishiya/formulae/skhd" ];
     casks = [
-      "radio-silence"
-      "bitwarden"
-      "discord"
+      # dev
+      "visual-studio-code"
+      "docker"
       "iterm2"
-      "obinskit"
-      "mpv"
-      "insomnia"
-      ## "kitty"
-      # Font support is better with homebrew
+      "font-iosevka"
+      "font-iosevka-nerd-font"
+      "font-jetbrains-mono"
       "font-jetbrains-mono-nerd-font"
+      "insomnia"
+      "figma"
+      "paw"
+      #networking
+      "discord"
+      # videos
+      "mpv"
+      "qlvideo"
+      "handbrake"
+      # others
+      "hackintool"
+      "firefox"
+      "microsoft-edge"
+      "altserver"
+      # utils
+      "transmission"
+      "obinskit"
+      "smoothscroll"
+      "radio-silence"
+      "steam"
+      "epic-games"
+      "the-unarchiver"
+      "steelseries-engine"
+      "intel-power-gadget"
+      "virtualbox"
+      "virtualbox-extension-pack"
+      "visual-studio-code"
+      "bartender"
     ];
-    # REMOVED: brew "xorpse/formulae/yabai", args: ["HEAD"]
   };
-
-  # List packages installed in system profile. To search by name, run:
-  # $ nix-env -qaP | grep wget
-  environment.systemPackages = [ pkgs.vim ];
-
-  # Use a custom configuration.nix location.
-  # $ darwin-rebuild switch -I darwin-config=$HOME/.config/nixpkgs/darwin/configuration.nix
-  # environment.darwinConfig = "$HOME/.config/nixpkgs/darwin/configuration.nix";
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
-  # nix.package = pkgs.nix;
 
-  # Create /etc/bashrc that loads the nix-darwin environment.
   programs.zsh.enable = true; # default shell on catalina
-  # programs.fish.enable = true;
 
-  # Used for backwards compatibility, please read the changelog before changing.
-  # $ darwin-rebuild changelog
   system.stateVersion = 4;
-
-  modules = {
-    services = {
-      skhd.enable = true;
-      #yabai.enable = true;
-    };
-  };
 }
