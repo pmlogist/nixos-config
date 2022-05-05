@@ -80,8 +80,8 @@ in {
         setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
         setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
 
-        export PATH=$XDG_CACHE_HOME/npm-packages/bin:$PATH
-        export NODE_PATH=$XDG_CACHE_HOME/npm-packages/lib/node_modules
+        export NODE_PATH=$HOME/.cache/npm-packages/lib/node_modules
+        export PATH=$HOME/.cache/npm-packages/bin:$PATH
       '';
       initExtra = ''
         bindkey "$terminfo[kcuu1]" history-substring-search-up

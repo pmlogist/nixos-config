@@ -3,8 +3,7 @@ let
   inherit (lib) mkIf mkOption types;
 
   cfg = config.modules.networking;
-in
-{
+in {
   options.modules.networking = {
     enable = mkOption {
       type = types.bool;
@@ -34,9 +33,12 @@ in
   };
 
   config = mkIf cfg.enable {
-
     networking = {
-      networkmanager.enable = true;
+      networkmanager = {
+        enable = true;
+        wifi.powersave = false;
+      };
+
       hostName = cfg.hostname;
       useDHCP = false;
       interfaces = mkIf cfg.interfaces.enp0s31f6 { enp0s31f6.useDHCP = true; };
@@ -45,5 +47,4 @@ in
     services.openssh.enable = true;
     networking.firewall.allowedTCPPorts = [ 3000 5000 ];
   };
-
 }

@@ -2,8 +2,6 @@
 
   modules = {
     desktop = {
-      #nemo.enable = true;
-      #sway.enable = true;
       fonts = {
         enable = true;
         jetbrains-mono = true;
@@ -58,11 +56,22 @@
     };
   };
 
-  home.packages = with pkgs;
-    [
-      wl-clipboard
-      #  j4-dmenu-desktop
-      #  docker
-    ];
+  home.packages = with pkgs; [
+    wl-clipboard
+    ulauncher
+
+    (pkgs.writeShellScriptBin "switch-theme" ''
+      CURRENT_GTK_THEME="$(dconf read /org/gnome/desktop/interface/color-scheme)"
+
+      if [ $CURRENT_GTK_THEME == "'prefer-dark'" ]
+      then
+        dconf write /org/gnome/desktop/interface/color-scheme '"default"';
+        dconf write /org/gnome/desktop/interface/gtk-theme '"Adwaita"';
+      else
+        dconf write /org/gnome/desktop/interface/color-scheme '"prefer-dark"';
+        dconf write /org/gnome/desktop/interface/gtk-theme '"Adwaita-dark"';
+      fi
+    '')
+  ];
   programs.home-manager.enable = true;
 }
