@@ -45,6 +45,7 @@
       "insomnia"
       "figma"
       "paw"
+      "alfred"
       #networking
       "discord"
       # videos

@@ -67,10 +67,44 @@
           pkgs = import unstable {
             system = "x86_64-darwin";
 
-            config = {
-              allowUnfree = true;
-              permittedInsecurePackages = [ "electron-11.5.0" ];
-            };
+            config = { allowUnfree = true; };
+
+            overlays = [
+              (import ./packages/apple-cursors.nix)
+              (import ./packages/apple-emoji.nix)
+              (import ./packages/apple-fonts.nix)
+
+              inputs.neovim-nightly.overlay
+            ];
+
+          };
+          configuration = { config, lib, pkgs, ... }: {
+            imports = [
+              ./modules/apps/video/mpv.nix
+              ./modules/apps/editors/neovim.nix
+
+              ./modules/desktop/fonts.nix
+
+              ./modules/dev/insomnia.nix
+              ./modules/dev/git.nix
+
+              ./modules/shell/direnv.nix
+              ./modules/shell/tmux.nix
+              ./modules/shell/zsh.nix
+
+              ./home/alena.nix
+            ];
+          };
+        };
+
+        yuliya = inputs.home-manager.lib.homeManagerConfiguration {
+          system = "x86_64-darwin";
+          homeDirectory = "/Users/pmlogist";
+          username = "pmlogist";
+          pkgs = import unstable {
+            system = "x86_64-darwin";
+
+            config = { allowUnfree = true; };
 
             overlays = [
               (import ./packages/apple-cursors.nix)

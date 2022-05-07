@@ -45,6 +45,7 @@
       "insomnia"
       "figma"
       "paw"
+      "alfred"
       #networking
       "discord"
       # videos
@@ -70,6 +71,7 @@
       "virtualbox-extension-pack"
       "visual-studio-code"
       "bartender"
+      "parrallels"
     ];
   };
 
