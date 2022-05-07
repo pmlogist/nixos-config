@@ -1,6 +1,6 @@
-{ inputs, config, pkgs, ... }: {
-  imports = [ ./hardware-configuration.nix ];
+{ config, pkgs, ... }:
 
+{
   nix = {
     package = pkgs.nixUnstable;
     extraOptions = ''
@@ -8,57 +8,71 @@
       keep-outputs = true
       keep-derivations = true
     '';
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
   };
 
-  boot = {
-    loader = {
-      grub = {
-        enable = true;
-        version = 2;
-        device = "nodev";
-        efiSupport = true;
-      };
-      efi.canTouchEfiVariables = true;
-    };
-    kernelParams = [ "mem_sleep_default=deep" ];
-  };
-
-  networking.interfaces.enp0s25.useDHCP = true;
-  services.logind.lidSwitch = "ignore";
-  modules = {
-    networking = {
-      enable = true;
-      hostname = "yuliya";
-    };
-    hardware = { printers = { enable = false; }; };
-    services = {
-      avahi.enable = true;
-      ssh.enable = true;
-    };
-    virtualisation = { docker.enable = true; };
-  };
-
-  time.timeZone = "Europe/Paris";
-
-  environment.systemPackages = with pkgs; [ vim git fzf ripgrep ];
-
-  services.openssh = {
+  system.activationScripts.postUserActivation.text = ''
+    # Install homebrew if it isn't there 
+    if [[ ! -d "/usr/local/Homebrew" ]]; then
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+  '';
+  homebrew = {
     enable = true;
-    passwordAuthentication = false;
-    permitRootLogin = "yes";
-    kbdInteractiveAuthentication = false;
+    autoUpdate = true;
+    cleanup = "zap";
+    global = {
+      brewfile = true;
+      noLock = true;
+    };
+    taps = [
+      "homebrew/core"
+      "homebrew/services"
+      "homebrew/cask"
+      "homebrew/cask-fonts"
+      "homebrew/cask-drivers"
+      "koekeishiya/formulae"
+    ];
+    brews = [ "koekeishiya/formulae/yabai" "koekeishiya/formulae/skhd" ];
+    casks = [
+      # dev
+      "visual-studio-code"
+      "docker"
+      "iterm2"
+      "font-iosevka"
+      "font-iosevka-nerd-font"
+      "font-jetbrains-mono"
+      "font-jetbrains-mono-nerd-font"
+      "insomnia"
+      "figma"
+      "paw"
+      #networking
+      "discord"
+      # videos
+      "mpv"
+      "qlvideo"
+      "handbrake"
+      # others
+      "hackintool"
+      "firefox"
+      "microsoft-edge"
+      "altserver"
+      # utils
+      "transmission"
+      "obinskit"
+      "radio-silence"
+      "the-unarchiver"
+      "intel-power-gadget"
+      "virtualbox"
+      "virtualbox-extension-pack"
+      "visual-studio-code"
+      "bartender"
+    ];
   };
 
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    shellAliases = { ll = "ls -la"; };
-  };
+  # Auto upgrade nix package and the daemon service.
+  services.nix-daemon.enable = true;
 
-  system.stateVersion = "21.11";
+  programs.zsh.enable = true; # default shell on catalina
+
+  system.stateVersion = 4;
 }

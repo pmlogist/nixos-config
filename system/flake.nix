@@ -20,6 +20,7 @@
           };
           overlays = overlays;
         };
+
     in inputs.flake-utils.lib.eachDefaultSystem
     (system: { legacyPackages = inputs.nixpkgs.legacyPackages.${system}; }) // {
       darwinConfigurations = {
@@ -27,6 +28,15 @@
           system = "x86_64-darwin";
           modules = [
             ./hosts/alena
+            ./modules/services/yabai.nix
+            ./modules/services/skhd.nix
+          ];
+        };
+
+        yuliya = darwin.lib.darwinSystem {
+          system = "x86_64-darwin";
+          modules = [
+            ./hosts/yuliya
             ./modules/services/yabai.nix
             ./modules/services/skhd.nix
           ];
